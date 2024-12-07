@@ -4,8 +4,8 @@ require 'vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-define('TELEGRAM_BOT_TOKEN', '6829666174:AAHaBjqjBg_lwteK4O-NpLiMzbckGi5Szuw');
-define('TELEGRAM_CHAT_ID', '6680224117');
+define('TELEGRAM_BOT_TOKEN', 'your-token-bot');
+define('TELEGRAM_CHAT_ID', 'your-chat-id');
 
 function fetchRecentLogs($conn) {
     $result = $conn->query("SELECT * FROM audit_logs ORDER BY timestamp DESC LIMIT 10");
@@ -64,14 +64,14 @@ function sendEmail($logs, $recipientEmail) {
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
-        $mail->Host = 'smtp.zoho.com';
+        $mail->Host = 'your-smtp-server';
         $mail->SMTPAuth = true;
-        $mail->Username = 'ahr@ahr180607.my.id';
-        $mail->Password = 'Haikal180607';
+        $mail->Username = 'your-smtp-email';
+        $mail->Password = 'your-smtp-password';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        $mail->setFrom('ahr@ahr180607.my.id', 'Audit Log Sender');
+        $mail->setFrom('your-smtp-email', 'Audit Log Sender');
         $mail->addAddress($recipientEmail);
 
         $mail->isHTML(true);
@@ -112,10 +112,10 @@ $logs = fetchRecentLogs($conn);
 if (!empty($logs)) {
     $formattedLogs = formatLogs($logs);
 
-    $recipientWhatsApp = "6282331422421";
+    $recipientWhatsApp = "your-receive-whatsapp";
     sendWhatsApp($formattedLogs, $recipientWhatsApp);
 
-    sendEmail($formattedLogs, 'ahr2396@gmail.com');
+    sendEmail($formattedLogs, 'your-receive-email');
 
     sendTelegram($formattedLogs);
 } else {
